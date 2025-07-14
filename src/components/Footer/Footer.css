@@ -1,0 +1,26 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer__text {
+  display: flex;
+  align-items: flex-start;
+  padding-left: 40px;
+  padding-bottom: 24px;
+  font-weight: 500;
+  font-style: medium;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.footer__year {
+  display: flex;
+  align-self: flex-end;
+  padding-right: 42px;
+  padding-bottom: 24px;
+  font-weight: 500;
+  font-style: medium;
+  font-size: 16px;
+  line-height: 20px;
+}
