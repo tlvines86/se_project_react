@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import "./App.css";
 import { coordinates, APIkey } from "../../utils/constants";
+import { getWeather, filterWeatherData } from "../../utils/weatherApi";
+
+import "./App.css";
+
 import Header from "../Header/Header";
 import Main from "../Main/Main";
+import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import Profile from "../Profile/Profile";
-import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import Footer from "../Footer/Footer";
+
 import CurrentTempartureUnitContext from "../../contexts/CurrentTemeratureContext";
-import AddItemModal from "../AddItemModal/AddItemModal";
-import { defaultClothingItems } from "../../utils/constants";
+
+import { getItems, baseUrl } from "../../utils/api";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -21,11 +25,10 @@ function App() {
     condition: "",
     isDay: true,
   });
-  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
+  const [clothingItems, setClothingItems] = useState([]);
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
-
   const [isLoading, setIsLoading] = useState(true);
 
   const handleToggleSwitchChange = () => {
@@ -45,12 +48,49 @@ function App() {
     setActiveModal("");
   };
 
-  const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
-    setClothingItems((prevItems) => [
-      { name, link: imageUrl, weather },
-      ...prevItems,
-    ]);
-    closeActiveModal();
+  const handleAddItemModalSubmit = async ({ name, imageUrl, weather }) => {
+    try {
+      const response = await fetch(`${baseUrl}/items`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, imageUrl, weather }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add item to server");
+      }
+
+      const newItem = await response.json();
+
+      setClothingItems((prevItems) => [newItem, ...prevItems]);
+      closeActiveModal();
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
+  };
+
+  const handleCardDelete = async (idToDelete) => {
+    try {
+      const requestOptions = {
+        method: "DELETE",
+      };
+      const response = await fetch(
+        `${baseUrl}/items/${idToDelete}`,
+        requestOptions
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      setClothingItems((prevItems) =>
+        prevItems.filter((item) => item._id !== idToDelete)
+      );
+      closeActiveModal();
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
 
   useEffect(() => {
@@ -64,6 +104,14 @@ function App() {
         console.error(error);
         setIsLoading(false);
       });
+  }, []);
+
+  useEffect(() => {
+    getItems()
+      .then((renderedClothingItems) => {
+        setClothingItems(renderedClothingItems);
+      })
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -106,7 +154,15 @@ function App() {
                   />
                 }
               />
-              <Route path="/profile" element={<Profile />} />
+              <Route
+                path="/profile"
+                element={
+                  <Profile
+                    handleCardClick={handleCardClick}
+                    clothingItems={clothingItems}
+                  />
+                }
+              />
             </Routes>
           </div>
         )}
@@ -119,6 +175,7 @@ function App() {
           activeModal={activeModal}
           card={selectedCard}
           handleCloseBtnClick={closeActiveModal}
+          handleCardDelete={handleCardDelete}
         />
         <Footer />
       </div>

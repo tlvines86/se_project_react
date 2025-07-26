@@ -1,7 +1,12 @@
-.header {
+.header__container {
   display: flex;
   align-items: center;
   padding: 32px 0 28px;
+}
+
+.header__link {
+  text-decoration: none;
+  color: #000000;
 }
 
 .header__logo {
@@ -22,6 +27,7 @@
   font-weight: 700;
   font-size: 20px;
   line-height: 24px;
+  cursor: pointer;
 }
 
 .header__user-container {

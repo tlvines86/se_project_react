@@ -20,10 +20,24 @@
   font-weight: 700;
   font-size: 20px;
   line-height: 24px;
+  align-items: flex-start;
 }
 
 .modal__image {
   max-width: 498px;
   min-height: 498px;
   object-fit: cover;
+}
+
+.modal__footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal__delete-btn {
+  width: 98px;
+  height: 13px;
+  margin-top: 25px;
+  padding-right: 33px;
+  cursor: pointer;
 }
