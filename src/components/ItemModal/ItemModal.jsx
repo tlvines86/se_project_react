@@ -1,4 +1,5 @@
 import "./ItemModal.css";
+import "../ModalWithForm/ModalWithForm.css";
 
 function ItemModal({ activeModal, handleCloseBtnClick, card }) {
   return (
@@ -16,7 +17,7 @@ function ItemModal({ activeModal, handleCloseBtnClick, card }) {
         />
         <div className="modal__footer">
           <h2 className="modal__caption">{card.name}</h2>
-          <p className="modal__weather">Weahter: {card.weather}</p>
+          <p className="modal__weather">Weather: {card.weather}</p>
         </div>
       </div>
     </div>
