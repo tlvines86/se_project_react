@@ -52,13 +52,13 @@ function App() {
     try {
       const newItemFromServer = await addItem({
         name,
-        link: imageUrl,
+        imageUrl,
         weather,
       });
 
       const normalizedItem = {
         ...newItemFromServer,
-        imageUrl: newItemFromServer.link,
+        imageUrl: newItemFromServer.imageUrl,
       };
 
       setClothingItems((prevItems) => [normalizedItem, ...prevItems]);

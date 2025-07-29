@@ -95,6 +95,73 @@
       "name": "T-Shirt",
       "weather": "hot",
       "imageUrl": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/T-Shirt.png?etag=44ed1963c44ab19cd2f5011522c5fc09"
+    },
+    {
+      "name": "hoodie",
+      "weather": "warm",
+      "_id": 17
+    },
+    {
+      "name": "hoodie",
+      "weather": "warm",
+      "_id": 18
+    },
+    {
+      "name": "hoodie",
+      "weather": "warm",
+      "_id": 19
+    },
+    {
+      "name": "hoodie",
+      "weather": "warm",
+      "_id": 20
+    },
+    {
+      "name": "hoodie",
+      "weather": "warm",
+      "_id": 21
+    },
+    {
+      "name": "hoodie",
+      "link": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Hoodie.png?etag=5f52451d0958ccb1016c78a45603a4e8",
+      "weather": "warm",
+      "_id": 22
+    },
+    {
+      "name": "hoodie",
+      "link": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Hoodie.png?etag=5f52451d0958ccb1016c78a45603a4e8",
+      "weather": "warm",
+      "_id": 23
+    },
+    {
+      "name": "hoodie",
+      "link": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Hoodie.png?etag=5f52451d0958ccb1016c78a45603a4e8",
+      "weather": "warm",
+      "_id": 24
+    },
+    {
+      "name": "hoodie",
+      "imageUrl": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Hoodie.png?etag=5f52451d0958ccb1016c78a45603a4e8",
+      "weather": "warm",
+      "_id": 25
+    },
+    {
+      "name": "hoodie",
+      "imageUrl": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Hoodie.png?etag=5f52451d0958ccb1016c78a45603a4e8",
+      "weather": "warm",
+      "_id": 26
+    },
+    {
+      "name": "hoodie",
+      "imageUrl": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Hoodie.png?etag=5f52451d0958ccb1016c78a45603a4e8",
+      "weather": "warm",
+      "_id": 27
+    },
+    {
+      "name": "hoodie",
+      "link": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Hoodie.png?etag=5f52451d0958ccb1016c78a45603a4e8",
+      "weather": "warm",
+      "_id": 28
     }
   ]
 }
