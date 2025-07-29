@@ -58,7 +58,7 @@ function App() {
 
       const normalizedItem = {
         ...newItemFromServer,
-        imageUrl: newItemFromServer.imageUrl,
+        imageUrl: newItemFromServer.link,
       };
 
       setClothingItems((prevItems) => [normalizedItem, ...prevItems]);
