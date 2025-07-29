@@ -15,7 +15,7 @@ import Footer from "../Footer/Footer";
 
 import CurrentTempartureUnitContext from "../../contexts/CurrentTemeratureContext";
 
-import { getItems, baseUrl } from "../../utils/api";
+import { getItems, addItem, deleteCard } from "../../utils/api";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -50,21 +50,18 @@ function App() {
 
   const handleAddItemModalSubmit = async ({ name, imageUrl, weather }) => {
     try {
-      const response = await fetch(`${baseUrl}/items`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, imageUrl, weather }),
+      const newItemFromServer = await addItem({
+        name,
+        link: imageUrl,
+        weather,
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to add item to server");
-      }
+      const normalizedItem = {
+        ...newItemFromServer,
+        imageUrl: newItemFromServer.link,
+      };
 
-      const newItem = await response.json();
-
-      setClothingItems((prevItems) => [newItem, ...prevItems]);
+      setClothingItems((prevItems) => [normalizedItem, ...prevItems]);
       closeActiveModal();
     } catch (error) {
       console.error("Error adding item:", error);
@@ -73,23 +70,13 @@ function App() {
 
   const handleCardDelete = async (idToDelete) => {
     try {
-      const requestOptions = {
-        method: "DELETE",
-      };
-      const response = await fetch(
-        `${baseUrl}/items/${idToDelete}`,
-        requestOptions
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
+      await deleteCard(idToDelete);
       setClothingItems((prevItems) =>
         prevItems.filter((item) => item._id !== idToDelete)
       );
       closeActiveModal();
     } catch (error) {
-      console.error("Error deleting item:", error);
+      console.error("Failed to delete card:", error);
     }
   };
 
@@ -97,11 +84,12 @@ function App() {
     getWeather(coordinates, APIkey)
       .then((data) => {
         const filteredData = filterWeatherData(data);
-        setIsLoading(false);
         setWeatherData(filteredData);
       })
       .catch((error) => {
         console.error(error);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }, []);
@@ -160,6 +148,7 @@ function App() {
                   <Profile
                     handleCardClick={handleCardClick}
                     clothingItems={clothingItems}
+                    handleAddBtnClick={handleAddBtnClick}
                   />
                 }
               />

@@ -1,5 +1,6 @@
 import "./ItemModal.css";
 import deleteItem from "../../assets/deleteItem.png";
+import { useModalClose } from "../ModalWithForm/ModalWithForm";
 
 function ItemModal({
   activeModal,
@@ -7,6 +8,8 @@ function ItemModal({
   card,
   handleCardDelete,
 }) {
+  useModalClose(activeModal === "preview", handleCloseBtnClick);
+
   return (
     <div className={`modal ${activeModal === "preview" && "modal_opened"}`}>
       <div className="modal__content modal__content_type_image">
@@ -29,9 +32,7 @@ function ItemModal({
             className="modal__delete-btn"
             src={deleteItem}
             alt="delete-btn"
-            onClick={() => {
-              handleCardDelete(card._id);
-            }}
+            onClick={() => handleCardDelete(card._id)}
           />
         </div>
       </div>
