@@ -7,20 +7,20 @@ export const CurrentUserProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("jwt");
     if (token) {
       setIsLoggedIn(true);
     }
   }, []);
 
   const login = (userData, token) => {
-    localStorage.setItem("token", token);
+    localStorage.setItem("jwt", token);
     setCurrentUser(userData);
     setIsLoggedIn(true);
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("jwt");
     setCurrentUser(null);
     setIsLoggedIn(false);
   };

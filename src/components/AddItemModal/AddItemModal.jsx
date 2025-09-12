@@ -11,7 +11,6 @@ function AddItemModal({ isOpen, handleCloseBtnClick, onAddItemModalSubmit }) {
   const handleImageUrlChange = (e) => setImageUrl(e.target.value);
   const handleWeatherChange = (e) => setWeather(e.target.value);
 
-  // Reset fields when modal opens
   useEffect(() => {
     if (isOpen) {
       setName("");
@@ -25,18 +24,17 @@ function AddItemModal({ isOpen, handleCloseBtnClick, onAddItemModalSubmit }) {
     onAddItemModalSubmit({ name, imageUrl, weather });
   };
 
-  // Check if all fields are filled
   const isFormValid =
     name.trim() !== "" && imageUrl.trim() !== "" && weather !== "";
 
   return (
     <ModalWithForm
-      titleText="New Garment"
-      buttonText="Add Garment"
+      title="New Garment"
+      submitText="Add Garment"
       isOpen={isOpen}
       handleCloseBtnClick={handleCloseBtnClick}
       onSubmit={handleSubmit}
-      isButtonActive={isFormValid} // pass as prop
+      isButtonActive={isFormValid}
     >
       <label className="modal__label">
         Name{" "}

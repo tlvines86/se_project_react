@@ -26,12 +26,15 @@ function LoginModal({ isOpen, onClose, onLogin, switchToRegister }) {
       isOpen={isOpen}
       onSubmit={handleSubmit}
       handleCloseBtnClick={onClose}
-      buttonText="Log In"
-      isButtonActive={isFormValid} // <-- enable/disable button
-      showSubmitButton={true} // show the submit button from ModalWithForm
+      submitText="Log In"
+      isButtonActive={isFormValid}
+      showSubmitButton={true}
     >
-      <label className="modal__label">Email*</label>
+      <label className="modal__label" htmlFor="login-email">
+        Email*
+      </label>
       <input
+        id="login-email"
         className="modal__input"
         type="email"
         placeholder="Email"
@@ -40,8 +43,11 @@ function LoginModal({ isOpen, onClose, onLogin, switchToRegister }) {
         required
       />
 
-      <label className="modal__label">Password*</label>
+      <label className="modal__label" htmlFor="login-password">
+        Password*
+      </label>
       <input
+        id="login-password"
         className="modal__input"
         type="password"
         placeholder="Password"

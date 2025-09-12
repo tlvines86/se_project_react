@@ -38,8 +38,11 @@ function RegisterModal({ isOpen, onClose, onRegister, switchToLogin }) {
       isButtonActive={isFormValid}
       showSubmitButton={true}
     >
-      <label className="modal__label">Email*</label>
+      <label className="modal__label" htmlFor="register-email">
+        Email*
+      </label>
       <input
+        id="register-email"
         className="modal__input"
         type="email"
         placeholder="Email"
@@ -48,8 +51,11 @@ function RegisterModal({ isOpen, onClose, onRegister, switchToLogin }) {
         required
       />
 
-      <label className="modal__label">Password*</label>
+      <label className="modal__label" htmlFor="register-password">
+        Password*
+      </label>
       <input
+        id="register-password"
         className="modal__input"
         type="password"
         placeholder="Password"
@@ -58,8 +64,11 @@ function RegisterModal({ isOpen, onClose, onRegister, switchToLogin }) {
         required
       />
 
-      <label className="modal__label">Name*</label>
+      <label className="modal__label" htmlFor="register-name">
+        Name*
+      </label>
       <input
+        id="register-name"
         className="modal__input"
         type="text"
         placeholder="Name"
@@ -68,8 +77,11 @@ function RegisterModal({ isOpen, onClose, onRegister, switchToLogin }) {
         required
       />
 
-      <label className="modal__label">Avatar URL*</label>
+      <label className="modal__label" htmlFor="register-avatar">
+        Avatar URL*
+      </label>
       <input
+        id="register-avatar"
         className="modal__input"
         type="url"
         placeholder="Avatar URL"
