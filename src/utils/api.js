@@ -20,19 +20,63 @@ const getItems = () => {
   );
 };
 
-const addItem = ({ name, imageUrl, weather }) =>
+const addItem = ({ name, imageUrl, weather }, token) =>
   request(`${baseUrl}/items`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({ name, link: imageUrl, weather }),
   }).then((item) => ({
     ...item,
     imageUrl: item.imageUrl || item.link,
   }));
 
-const deleteCard = (idToDelete) =>
+const deleteCard = (idToDelete, token) =>
   request(`${baseUrl}/items/${idToDelete}`, {
     method: "DELETE",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
   });
 
-export { getItems, addItem, deleteCard, baseUrl, checkResponse };
+const updateUserProfile = (name, avatar) => {
+  return request(`${baseUrl}/users/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    },
+    body: JSON.stringify({ name, avatar }),
+  });
+};
+
+const addCardLike = (cardId, token) =>
+  request(`${baseUrl}/items/${cardId}/likes`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+
+const removeCardLike = (cardId, token) =>
+  request(`${baseUrl}/items/${cardId}/likes`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+
+export {
+  getItems,
+  addItem,
+  deleteCard,
+  updateUserProfile,
+  addCardLike,
+  removeCardLike,
+  baseUrl,
+  checkResponse,
+};

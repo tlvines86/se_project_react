@@ -41,3 +41,7 @@
   padding-right: 33px;
   cursor: pointer;
 }
+
+.modal__delete-btn_hidden {
+  display: none;
+}

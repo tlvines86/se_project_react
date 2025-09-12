@@ -2,3 +2,49 @@
   display: flex;
   gap: 116px;
 }
+
+.profile__user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile__avatar-container {
+  position: relative;
+  display: inline-block;
+}
+
+.profile__avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.profile__edit-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(25%, 25%);
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.profile__edit-btn:hover {
+  background-color: #45a049;
+}
+
+.profile__name {
+  margin-top: 10px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}

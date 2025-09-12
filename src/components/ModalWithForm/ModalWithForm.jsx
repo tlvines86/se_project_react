@@ -6,15 +6,11 @@ function useModalClose(isOpen, onClose) {
     if (!isOpen) return;
 
     const handleEscape = (e) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
+      if (e.key === "Escape") onClose();
     };
 
     const handleOverlay = (e) => {
-      if (e.target.classList.contains("modal")) {
-        onClose();
-      }
+      if (e.target.classList.contains("modal")) onClose();
     };
 
     document.addEventListener("keydown", handleEscape);
@@ -29,27 +25,38 @@ function useModalClose(isOpen, onClose) {
 
 function ModalWithForm({
   children,
-  buttonText,
-  titleText,
+  title,
   isOpen,
-  handleCloseBtnClick,
   onSubmit,
+  handleCloseBtnClick,
+  showSubmitButton = true,
+  submitText = "Submit",
+  isButtonActive = false,
 }) {
   useModalClose(isOpen, handleCloseBtnClick);
+
   return (
     <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
       <div className="modal__content">
-        <h2 className="modal__title">{titleText}</h2>
         <button
-          onClick={handleCloseBtnClick}
           type="button"
           className="modal__close-btn"
+          onClick={handleCloseBtnClick}
         />
-        <form onSubmit={onSubmit} className="modal__form">
+        <h2 className="modal__title">{title}</h2>
+        <form className="modal__form" onSubmit={onSubmit}>
           {children}
-          <button type="submit" className="modal__submit-btn">
-            {buttonText}
-          </button>
+          {showSubmitButton && (
+            <button
+              type="submit"
+              className={`modal__submit-btn ${
+                isButtonActive ? "modal__submit-btn--active" : ""
+              }`}
+              disabled={!isButtonActive}
+            >
+              {submitText}
+            </button>
+          )}
         </form>
       </div>
     </div>

@@ -1,0 +1,8 @@
+.modal__footer {
+  width: 158px;
+  height: 36px;
+}
+
+.modal__switch-text {
+  white-space: nowrap;
+}
