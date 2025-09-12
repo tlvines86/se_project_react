@@ -26,9 +26,6 @@ function LoginModal({ isOpen, onClose, onLogin, switchToRegister }) {
       isOpen={isOpen}
       onSubmit={handleSubmit}
       handleCloseBtnClick={onClose}
-      submitText="Log In"
-      isButtonActive={isFormValid}
-      showSubmitButton={true}
     >
       <label className="modal__label" htmlFor="login-email">
         Email*
@@ -56,16 +53,27 @@ function LoginModal({ isOpen, onClose, onLogin, switchToRegister }) {
         required
       />
 
-      <span className="modal__switch-text">
-        or{" "}
+      <div className="modal__footer">
         <button
-          type="button"
-          className="modal__switch-btn"
-          onClick={switchToRegister}
+          type="submit"
+          className={`modal__submit-btn ${
+            isFormValid ? "modal__submit-btn--active" : ""
+          }`}
+          disabled={!isFormValid}
         >
-          Sign Up
+          Log In
         </button>
-      </span>
+        <span className="modal__switch-text">
+          or{" "}
+          <button
+            type="button"
+            className="modal__switch-btn"
+            onClick={switchToRegister}
+          >
+            Sign Up
+          </button>
+        </span>
+      </div>
     </ModalWithForm>
   );
 }

@@ -1,17 +1,59 @@
 .sidebar {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  white-space: nowrap;
-  gap: 16px;
+  gap: 20px;
   width: 229px;
-  height: 56px;
+}
+
+.sidebar__avatar-container {
+  position: relative;
+}
+
+.sidebar__avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.sidebar__edit-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(25%, 25%);
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar__edit-btn:hover {
+  background-color: #45a049;
 }
 
 .sidebar__username {
   font-weight: 700;
   font-size: 20px;
-  line-height: 100%;
-  margin: 0;
-  padding: 0;
+  margin: 10px 0 0;
+  text-align: center;
+}
+
+.sidebar__signout-btn {
+  background: none;
+  border: none;
+  color: #ff4d4f;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.sidebar__signout-btn:hover {
+  opacity: 0.7;
 }

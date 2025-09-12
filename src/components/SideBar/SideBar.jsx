@@ -7,12 +7,22 @@ function SideBar() {
 
   return (
     <div className="sidebar">
-      <img
-        className="sidebar__avatar"
-        src={currentUser?.avatar || "default-avatar.png"}
-        alt={currentUser?.name || "User Avatar"}
-      />
+      <div className="sidebar__avatar-container">
+        <img
+          className="sidebar__avatar"
+          src={currentUser?.avatar || defaultAvatar}
+          alt={
+            currentUser?.name
+              ? `${currentUser.name}'s avatar`
+              : "Default user avatar"
+          }
+        />
+        <button className="sidebar__edit-btn">Edit</button>
+      </div>
+
       <p className="sidebar__username">{currentUser?.name || "User Name"}</p>
+
+      <button className="sidebar__signout-btn">Sign Out</button>
     </div>
   );
 }

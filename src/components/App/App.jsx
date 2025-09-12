@@ -11,7 +11,7 @@ import {
   addCardLike,
   removeCardLike,
 } from "../../utils/api";
-import { register, login, checkToken } from "../../utils/auth";
+import { register, login as loginRequest, checkToken } from "../../utils/auth";
 
 import "./App.css";
 
@@ -34,6 +34,45 @@ function ProtectedRoute({ isLoggedIn, children }) {
   return children;
 }
 
+async function handleRegisterSubmit(data, login, closeRegister) {
+  try {
+    await register(data);
+
+    const res = await loginRequest({
+      email: data.email,
+      password: data.password,
+    });
+
+    if (!res?.token) throw new Error("No token received from login");
+
+    localStorage.setItem("jwt", res.token);
+
+    const userData = await checkToken(res.token);
+
+    login(userData, res.token);
+    closeRegister();
+  } catch (err) {
+    console.error("Registration/Login failed", err);
+  }
+}
+
+async function handleLoginSubmit({ email, password }, login, closeLogin) {
+  try {
+    const res = await loginRequest({ email, password });
+
+    if (!res?.token) throw new Error("No token received from login");
+
+    localStorage.setItem("jwt", res.token);
+
+    const userData = await checkToken(res.token);
+
+    login(userData, res.token);
+    closeLogin();
+  } catch (err) {
+    console.error("Login failed", err);
+  }
+}
+
 function App() {
   const [weatherData, setWeatherData] = useState({
     type: "",
@@ -44,7 +83,6 @@ function App() {
   });
 
   const [clothingItems, setClothingItems] = useState([]);
-
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
@@ -64,6 +102,7 @@ function App() {
 
   const handleAddBtnClick = () => setActiveModal("add-garment");
   const closeActiveModal = () => setActiveModal("");
+
   const openRegister = () => {
     setIsRegisterOpen(true);
     setIsLoginOpen(false);
@@ -174,7 +213,6 @@ function App() {
                       onRegisterClick={openRegister}
                       onLoginClick={openLogin}
                     />
-
                     <Routes>
                       <Route
                         path="/"
@@ -216,20 +254,17 @@ function App() {
                         }
                       />
                     </Routes>
-
                     <AddItemModal
                       isOpen={activeModal === "add-garment"}
                       handleCloseBtnClick={closeActiveModal}
                       onAddItemModalSubmit={handleAddItemModalSubmit}
                     />
-
                     <ItemModal
                       activeModal={activeModal}
                       card={selectedCard}
                       handleCloseBtnClick={closeActiveModal}
                       handleCardDelete={handleCardDelete}
                     />
-
                     <EditProfileModal
                       isOpen={isEditProfileOpen}
                       onClose={() => setIsEditProfileOpen(false)}
@@ -237,7 +272,6 @@ function App() {
                         handleEditProfile(data, currentUser, setCurrentUser)
                       }
                     />
-
                     <AuthModalsWrapper
                       isRegisterOpen={isRegisterOpen}
                       isLoginOpen={isLoginOpen}
@@ -245,34 +279,13 @@ function App() {
                       closeLogin={closeLogin}
                       openRegister={openRegister}
                       openLogin={openLogin}
-                      onRegister={async (data) => {
-                        try {
-                          await register(data);
-                          const res = await login({
-                            email: data.email,
-                            password: data.password,
-                          });
-                          localStorage.setItem("jwt", res.token);
-                          const userData = await checkToken(res.token);
-                          login(userData, res.token);
-                          closeRegister();
-                        } catch (err) {
-                          console.error("Registration/Login failed", err);
-                        }
-                      }}
-                      onLogin={async ({ email, password }) => {
-                        try {
-                          const res = await login({ email, password });
-                          localStorage.setItem("jwt", res.token);
-                          const userData = await checkToken(res.token);
-                          login(userData, res.token);
-                          closeLogin();
-                        } catch (err) {
-                          console.error("Login failed", err);
-                        }
-                      }}
+                      onRegister={(data) =>
+                        handleRegisterSubmit(data, login, closeRegister)
+                      }
+                      onLogin={(data) =>
+                        handleLoginSubmit(data, login, closeLogin)
+                      }
                     />
-
                     <Footer />
                   </>
                 )}

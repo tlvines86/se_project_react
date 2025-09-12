@@ -157,3 +157,13 @@
   opacity: 1;
   cursor: pointer;
 }
+
+.modal__footer {
+  width: 168px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-top: 40px;
+}
