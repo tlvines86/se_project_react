@@ -10,12 +10,19 @@ function ToggleSwitch() {
   return (
     <label className="toggleswitch">
       <input
-        onChange={handleToggleSwitchChange}
         type="checkbox"
         className="toggleswitch__checkbox"
-        checked={currentTemperatureUnit === "F"}
+        onChange={handleToggleSwitchChange}
+        checked={currentTemperatureUnit === "C"}
       />
-      <span className="toggleswitch__circle"></span>
+      <span
+        className={`toggleswitch__circle ${
+          currentTemperatureUnit === "F"
+            ? "toggleswitch__circle_F"
+            : "toggleswitch__circle_C"
+        }`}
+      ></span>
+
       <span className="toggleswitch__text toggleswitch__text_F">F</span>
       <span className="toggleswitch__text toggleswitch__text_C">C</span>
     </label>
