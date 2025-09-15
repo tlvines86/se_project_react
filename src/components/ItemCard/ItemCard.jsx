@@ -2,7 +2,7 @@ import "./ItemCard.css";
 import { useContext } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function ItemCard({ item, onCardClick, onCardLike }) {
+function ItemCard({ item, onCardClick, onCardLike, isLoggedIn }) {
   const currentUser = useContext(CurrentUserContext);
 
   const handleCardClick = () => {
@@ -32,7 +32,7 @@ function ItemCard({ item, onCardClick, onCardLike }) {
         alt={item.name}
       />
 
-      {currentUser && (
+      {isLoggedIn && (
         <button className={itemLikeButtonClassName} onClick={handleLike}>
           ❤️ {item.likes ? item.likes.length : 0}
         </button>

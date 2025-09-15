@@ -8,6 +8,7 @@ function ClothesSection({
   clothingItems,
   handleAddBtnClick,
   handleCardLike,
+  isLoggedIn,
 }) {
   const currentUser = useContext(CurrentUserContext);
 
@@ -36,6 +37,7 @@ function ClothesSection({
               item={item}
               onCardClick={handleCardClick}
               onCardLike={handleCardLike || (() => {})}
+              isLoggedIn={isLoggedIn}
             />
           ))}
         </ul>

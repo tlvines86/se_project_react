@@ -34,45 +34,6 @@ function ProtectedRoute({ isLoggedIn, children }) {
   return children;
 }
 
-async function handleRegisterSubmit(data, login, closeRegister) {
-  try {
-    await register(data);
-
-    const res = await loginRequest({
-      email: data.email,
-      password: data.password,
-    });
-
-    if (!res?.token) throw new Error("No token received from login");
-
-    localStorage.setItem("jwt", res.token);
-
-    const userData = await checkToken(res.token);
-
-    login(userData, res.token);
-    closeRegister();
-  } catch (err) {
-    console.error("Registration/Login failed", err);
-  }
-}
-
-async function handleLoginSubmit({ email, password }, login, closeLogin) {
-  try {
-    const res = await loginRequest({ email, password });
-
-    if (!res?.token) throw new Error("No token received from login");
-
-    localStorage.setItem("jwt", res.token);
-
-    const userData = await checkToken(res.token);
-
-    login(userData, res.token);
-    closeLogin();
-  } catch (err) {
-    console.error("Login failed", err);
-  }
-}
-
 function App() {
   const [weatherData, setWeatherData] = useState({
     type: "",
@@ -113,6 +74,43 @@ function App() {
   };
   const closeRegister = () => setIsRegisterOpen(false);
   const closeLogin = () => setIsLoginOpen(false);
+
+  const handleRegisterSubmit = async (data, login, closeRegister) => {
+    try {
+      await register(data);
+
+      const res = await loginRequest({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (!res?.token) throw new Error("No token received");
+
+      localStorage.setItem("jwt", res.token);
+
+      const userData = await checkToken(res.token);
+      login(userData, res.token);
+      closeRegister();
+    } catch (err) {
+      console.error("Registration/Login failed", err);
+    }
+  };
+
+  const handleLoginSubmit = async ({ email, password }, login, closeLogin) => {
+    try {
+      const res = await loginRequest({ email, password });
+
+      if (!res?.token) throw new Error("No token received");
+
+      localStorage.setItem("jwt", res.token);
+
+      const userData = await checkToken(res.token);
+      login(userData, res.token);
+      closeLogin();
+    } catch (err) {
+      console.error("Login failed", err);
+    }
+  };
 
   const handleCardLike = (card, currentUser) => {
     if (!currentUser) return;
@@ -224,6 +222,7 @@ function App() {
                             onCardLike={(card) =>
                               handleCardLike(card, currentUser)
                             }
+                            isLoggedIn={isLoggedIn}
                           />
                         }
                       />
@@ -249,11 +248,13 @@ function App() {
                                   setCurrentUser
                                 )
                               }
+                              isLoggedIn={isLoggedIn}
                             />
                           </ProtectedRoute>
                         }
                       />
                     </Routes>
+
                     <AddItemModal
                       isOpen={activeModal === "add-garment"}
                       handleCloseBtnClick={closeActiveModal}

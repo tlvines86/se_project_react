@@ -19,12 +19,14 @@ function Header({
 
   const currentUser = useContext(CurrentUserContext);
 
+  const defaultAvatar = "https://via.placeholder.com/40?text=U";
+
   const renderAvatar = () => {
     if (currentUser?.avatar) {
       return (
         <img
           src={currentUser.avatar}
-          alt={currentUser.name}
+          alt={`${currentUser.name || "User"}'s avatar`}
           className="header__avatar"
         />
       );
@@ -36,7 +38,13 @@ function Header({
         </div>
       );
     }
-    return null;
+    return (
+      <img
+        src={defaultAvatar}
+        alt="Default avatar"
+        className="header__avatar"
+      />
+    );
   };
 
   return (

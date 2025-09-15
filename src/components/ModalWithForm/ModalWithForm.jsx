@@ -29,6 +29,7 @@ function ModalWithForm({
   isOpen,
   onSubmit,
   handleCloseBtnClick,
+  submitText,
 }) {
   useModalClose(isOpen, handleCloseBtnClick);
 
@@ -43,6 +44,12 @@ function ModalWithForm({
         <h2 className="modal__title">{title}</h2>
         <form className="modal__form" onSubmit={onSubmit}>
           {children}
+
+          {submitText && (
+            <button type="submit" className="modal__submit-btn">
+              {submitText}
+            </button>
+          )}
         </form>
       </div>
     </div>
