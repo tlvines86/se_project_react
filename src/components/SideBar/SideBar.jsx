@@ -1,10 +1,11 @@
 import "./SideBar.css";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function SideBar() {
-  const { currentUser } = useContext(CurrentUserContext);
-
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const navigate = useNavigate();
   const defaultAvatar = "https://via.placeholder.com/80?text=U";
 
   const renderAvatar = () => {
@@ -13,7 +14,7 @@ function SideBar() {
         <img
           className="sidebar__avatar"
           src={currentUser.avatar}
-          alt={`${currentUser.name || "User"}'s avatar`}
+          alt={`${currentUser.name}'s avatar`}
         />
       );
     }
@@ -33,16 +34,28 @@ function SideBar() {
     );
   };
 
+  const handleEditProfile = () => {
+    navigate("/profile/edit");
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    setCurrentUser(null);
+    navigate("/login");
+  };
+
   return (
     <div className="sidebar">
       <div className="sidebar__avatar-container">
         {renderAvatar()}
-        <button className="sidebar__edit-btn">Edit</button>
+        <button className="sidebar__edit-btn" onClick={handleEditProfile}>
+          Edit
+        </button>
       </div>
-
       <p className="sidebar__username">{currentUser?.name || "User Name"}</p>
-
-      <button className="sidebar__signout-btn">Sign Out</button>
+      <button className="sidebar__signout-btn" onClick={handleSignOut}>
+        Sign Out
+      </button>
     </div>
   );
 }

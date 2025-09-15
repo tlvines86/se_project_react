@@ -48,6 +48,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -75,19 +76,28 @@ function App() {
   const closeRegister = () => setIsRegisterOpen(false);
   const closeLogin = () => setIsLoginOpen(false);
 
+  const handleSubmit = async (request) => {
+    setIsSubmitting(true);
+    try {
+      await request();
+      closeActiveModal();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleRegisterSubmit = async (data, login, closeRegister) => {
     try {
       await register(data);
-
       const res = await loginRequest({
         email: data.email,
         password: data.password,
       });
-
       if (!res?.token) throw new Error("No token received");
 
       localStorage.setItem("jwt", res.token);
-
       const userData = await checkToken(res.token);
       login(userData, res.token);
       closeRegister();
@@ -99,11 +109,9 @@ function App() {
   const handleLoginSubmit = async ({ email, password }, login, closeLogin) => {
     try {
       const res = await loginRequest({ email, password });
-
       if (!res?.token) throw new Error("No token received");
 
       localStorage.setItem("jwt", res.token);
-
       const userData = await checkToken(res.token);
       login(userData, res.token);
       closeLogin();
@@ -116,7 +124,6 @@ function App() {
     if (!currentUser) return;
 
     const isLiked = card.likes?.includes(currentUser._id);
-
     const updatedItems = clothingItems.map((i) => {
       if (i._id === card._id) {
         const updatedLikes = isLiked
@@ -134,55 +141,38 @@ function App() {
     else removeCardLike(card._id, token).catch(console.error);
   };
 
-  const handleAddItemModalSubmit = async ({ name, imageUrl, weather }) => {
-    try {
+  const handleAddItemModalSubmit = (item) => {
+    handleSubmit(async () => {
       const token = localStorage.getItem("jwt");
-      const newItemFromServer = await apiAddItem({
-        name,
-        imageUrl,
-        weather,
-        token,
-      });
+      const newItem = await apiAddItem({ ...item, token });
       const normalizedItem = {
-        ...newItemFromServer,
-        imageUrl: newItemFromServer.link,
+        ...newItem,
+        imageUrl: newItem.link || newItem.imageUrl,
       };
       setClothingItems((prev) => [normalizedItem, ...prev]);
-      closeActiveModal();
-    } catch (error) {
-      console.error("Error adding item:", error);
-    }
+    });
   };
 
-  const handleCardDelete = async (idToDelete) => {
-    try {
+  const handleCardDelete = (idToDelete) => {
+    handleSubmit(async () => {
       const token = localStorage.getItem("jwt");
       await apiDeleteCard(idToDelete, token);
       setClothingItems((prev) =>
         prev.filter((item) => item._id !== idToDelete)
       );
-      closeActiveModal();
-    } catch (error) {
-      console.error("Failed to delete card:", error);
-    }
+    });
   };
 
-  const handleEditProfile = async (
-    { name, avatar },
-    currentUser,
-    setCurrentUser
-  ) => {
-    try {
+  const handleEditProfile = ({ name, avatar }, currentUser, setCurrentUser) => {
+    handleSubmit(async () => {
       const updatedUser = await updateUserProfile(name, avatar);
       setCurrentUser(updatedUser);
       setIsEditProfileOpen(false);
-      closeActiveModal();
-    } catch (err) {
-      console.error("Error updating profile:", err);
-    }
+    });
   };
 
   useEffect(() => {
+    setIsLoading(true);
     getWeather(coordinates, APIkey)
       .then((data) => setWeatherData(filterWeatherData(data)))
       .catch(console.error)
@@ -211,6 +201,7 @@ function App() {
                       onRegisterClick={openRegister}
                       onLoginClick={openLogin}
                     />
+
                     <Routes>
                       <Route
                         path="/"
@@ -259,20 +250,26 @@ function App() {
                       isOpen={activeModal === "add-garment"}
                       handleCloseBtnClick={closeActiveModal}
                       onAddItemModalSubmit={handleAddItemModalSubmit}
+                      isLoading={isSubmitting}
                     />
+
                     <ItemModal
                       activeModal={activeModal}
                       card={selectedCard}
                       handleCloseBtnClick={closeActiveModal}
                       handleCardDelete={handleCardDelete}
+                      isLoading={isSubmitting}
                     />
+
                     <EditProfileModal
                       isOpen={isEditProfileOpen}
                       onClose={() => setIsEditProfileOpen(false)}
                       onEditProfile={(data) =>
                         handleEditProfile(data, currentUser, setCurrentUser)
                       }
+                      isLoading={isSubmitting}
                     />
+
                     <AuthModalsWrapper
                       isRegisterOpen={isRegisterOpen}
                       isLoginOpen={isLoginOpen}
@@ -286,7 +283,9 @@ function App() {
                       onLogin={(data) =>
                         handleLoginSubmit(data, login, closeLogin)
                       }
+                      isLoading={isSubmitting}
                     />
+
                     <Footer />
                   </>
                 )}

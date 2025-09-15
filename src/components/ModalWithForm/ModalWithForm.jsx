@@ -30,6 +30,7 @@ function ModalWithForm({
   onSubmit,
   handleCloseBtnClick,
   submitText,
+  isButtonActive = true,
 }) {
   useModalClose(isOpen, handleCloseBtnClick);
 
@@ -46,7 +47,11 @@ function ModalWithForm({
           {children}
 
           {submitText && (
-            <button type="submit" className="modal__submit-btn">
+            <button
+              type="submit"
+              className="modal__submit-btn"
+              disabled={!isButtonActive}
+            >
               {submitText}
             </button>
           )}

@@ -10,15 +10,13 @@ function Header({
   weatherData,
   onRegisterClick,
   onLoginClick,
-  isLoggedIn,
 }) {
   const currentDate = new Date().toLocaleString("default", {
     month: "long",
     day: "numeric",
   });
 
-  const currentUser = useContext(CurrentUserContext);
-
+  const { currentUser } = useContext(CurrentUserContext);
   const defaultAvatar = "https://via.placeholder.com/40?text=U";
 
   const renderAvatar = () => {
@@ -53,14 +51,12 @@ function Header({
         <Link to="/">
           <img className="header__logo" src={logo} alt="logo" />
         </Link>
-
         <p className="header__date-and-location">
-          {currentDate}, {weatherData.city}
+          {currentDate}, {weatherData?.city || "Your City"}
         </p>
-
         <ToggleSwitch />
 
-        {isLoggedIn && currentUser ? (
+        {currentUser ? (
           <>
             <button
               onClick={handleAddBtnClick}
