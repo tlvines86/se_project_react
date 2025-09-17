@@ -178,16 +178,8 @@ function App() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    if (token) {
-      checkToken(token)
-        .then((userData) => {
-          login(userData, token);
-        })
-        .catch(() => localStorage.removeItem("jwt"));
-    }
-
     setIsLoading(true);
+
     getWeather(coordinates, APIkey)
       .then((data) => setWeatherData(filterWeatherData(data)))
       .catch(console.error)
@@ -243,7 +235,7 @@ function App() {
                                 setIsEditProfileOpen(true)
                               }
                               setClothingItems={setClothingItems}
-                              handleCardLike={(card) =>
+                              onCardLike={(card) =>
                                 handleCardLike(card, currentUser)
                               }
                               onEditProfile={(data) =>

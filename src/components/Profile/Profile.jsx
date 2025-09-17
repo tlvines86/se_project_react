@@ -41,11 +41,10 @@ function Profile({
       </section>
 
       {isProfileModalOpen && (
-        <ItemModal
-          activeModal="editProfile"
-          handleCloseBtnClick={() => setProfileModalOpen(false)}
-          currentUser={currentUser}
-          onUpdateUser={setCurrentUser}
+        <EditProfileModal
+          isOpen={isProfileModalOpen}
+          onClose={() => setProfileModalOpen(false)}
+          onEditProfile={(data) => setCurrentUser(data)}
         />
       )}
     </div>
