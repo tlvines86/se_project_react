@@ -144,7 +144,12 @@ function App() {
   const handleAddItemModalSubmit = (item) => {
     handleSubmit(async () => {
       const token = localStorage.getItem("jwt");
-      const newItem = await apiAddItem({ ...item, token });
+      const correctItem = {
+        ...item,
+        imageUrl: item.link || item.imageUrl,
+        weather: item.weather || item.temperature,
+      };
+      const newItem = await apiAddItem(correctItem, token);
       const normalizedItem = {
         ...newItem,
         imageUrl: newItem.link || newItem.imageUrl,
@@ -165,13 +170,23 @@ function App() {
 
   const handleEditProfile = ({ name, avatar }, currentUser, setCurrentUser) => {
     handleSubmit(async () => {
-      const updatedUser = await updateUserProfile(name, avatar);
+      const token = localStorage.getItem("jwt");
+      const updatedUser = await updateUserProfile(name, avatar, token);
       setCurrentUser(updatedUser);
       setIsEditProfileOpen(false);
     });
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      checkToken(token)
+        .then((userData) => {
+          login(userData, token);
+        })
+        .catch(() => localStorage.removeItem("jwt"));
+    }
+
     setIsLoading(true);
     getWeather(coordinates, APIkey)
       .then((data) => setWeatherData(filterWeatherData(data)))
@@ -201,7 +216,6 @@ function App() {
                       onRegisterClick={openRegister}
                       onLoginClick={openLogin}
                     />
-
                     <Routes>
                       <Route
                         path="/"
@@ -245,14 +259,12 @@ function App() {
                         }
                       />
                     </Routes>
-
                     <AddItemModal
                       isOpen={activeModal === "add-garment"}
                       handleCloseBtnClick={closeActiveModal}
                       onAddItemModalSubmit={handleAddItemModalSubmit}
                       isLoading={isSubmitting}
                     />
-
                     <ItemModal
                       activeModal={activeModal}
                       card={selectedCard}
@@ -260,7 +272,6 @@ function App() {
                       handleCardDelete={handleCardDelete}
                       isLoading={isSubmitting}
                     />
-
                     <EditProfileModal
                       isOpen={isEditProfileOpen}
                       onClose={() => setIsEditProfileOpen(false)}
@@ -269,7 +280,6 @@ function App() {
                       }
                       isLoading={isSubmitting}
                     />
-
                     <AuthModalsWrapper
                       isRegisterOpen={isRegisterOpen}
                       isLoginOpen={isLoginOpen}
@@ -285,7 +295,6 @@ function App() {
                       }
                       isLoading={isSubmitting}
                     />
-
                     <Footer />
                   </>
                 )}

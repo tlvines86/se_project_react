@@ -1,55 +1,49 @@
 import "./ItemModal.css";
-import deleteItem from "../../assets/deleteItem.png";
-import { useModalClose } from "../ModalWithForm/ModalWithForm";
-import { useContext } from "react";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
+import { useState } from "react";
 
 function ItemModal({
   activeModal,
   handleCloseBtnClick,
-  card,
-  handleCardDelete,
+  currentUser,
+  onUpdateUser,
 }) {
-  useModalClose(activeModal === "preview", handleCloseBtnClick);
+  const [name, setName] = useState(currentUser?.name || "");
+  const [avatar, setAvatar] = useState(currentUser?.avatar || "");
 
-  const { currentUser } = useContext(CurrentUserContext);
-
-  const isOwn =
-    card?.owner === currentUser?._id || card?.owner?._id === currentUser?._id;
-
-  const itemDeleteButtonClassName = `modal__delete-btn ${
-    isOwn ? "" : "modal__delete-btn_hidden"
-  }`;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    apiUpdateUserProfile({ name, avatar })
+      .then((updatedUser) => {
+        onUpdateUser(updatedUser);
+        handleCloseBtnClick();
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
-    <div className={`modal ${activeModal === "preview" ? "modal_opened" : ""}`}>
-      <div className="modal__content modal__content_type_image">
-        <button
-          onClick={handleCloseBtnClick}
-          type="button"
-          className="modal__close-btn"
-        ></button>
-
-        <img
-          src={card?.imageUrl}
-          alt={`Card showing ${card?.name || "item"}`}
-          className="modal__image"
+    <div
+      className={`modal ${activeModal === "editProfile" ? "modal_open" : ""}`}
+    >
+      <button className="modal__close" onClick={handleCloseBtnClick}>
+        ×
+      </button>
+      <form className="modal__form" onSubmit={handleSubmit}>
+        <h2>Edit Profile</h2>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Name"
+          required
         />
-
-        <div className="modal__footer">
-          <div className="modal__caption-container">
-            <h2 className="modal__caption">{card?.name || "Untitled"}</h2>
-            <p className="modal__weather">Weather: {card?.weather || "N/A"}</p>
-          </div>
-
-          <img
-            className={itemDeleteButtonClassName}
-            src={deleteItem}
-            alt="delete-btn"
-            onClick={() => handleCardDelete(card._id)}
-          />
-        </div>
-      </div>
+        <input
+          type="url"
+          value={avatar}
+          onChange={(e) => setAvatar(e.target.value)}
+          placeholder="Avatar URL"
+        />
+        <button type="submit">Save</button>
+      </form>
     </div>
   );
 }

@@ -27,7 +27,7 @@ const addItem = ({ name, imageUrl, weather }, token) =>
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ name, link: imageUrl, weather }),
+    body: JSON.stringify({ name, imageUrl, weather }),
   }).then((item) => ({
     ...item,
     imageUrl: item.imageUrl || item.link,

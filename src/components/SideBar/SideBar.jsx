@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function SideBar() {
+function SideBar({ handleOpenProfileModal }) {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const defaultAvatar = "https://via.placeholder.com/80?text=U";
@@ -35,13 +35,13 @@ function SideBar() {
   };
 
   const handleEditProfile = () => {
-    navigate("/profile/edit");
+    if (handleOpenProfileModal) handleOpenProfileModal();
   };
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
     setCurrentUser(null);
-    navigate("/login");
+    navigate("/");
   };
 
   return (

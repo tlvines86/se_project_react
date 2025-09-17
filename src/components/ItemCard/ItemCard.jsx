@@ -25,14 +25,12 @@ function ItemCard({ item, onCardClick, onCardLike }) {
   return (
     <li className="card">
       <h2 className="card__name">{item.name}</h2>
-
       <img
         onClick={handleCardClick}
         className="card__image"
         src={item.imageUrl}
         alt={item.name}
       />
-
       {currentUser && (
         <button className={likeButtonClass} onClick={handleLike}>
           ❤️ {item.likes ? item.likes.length : 0}
