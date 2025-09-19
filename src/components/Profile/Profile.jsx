@@ -1,15 +1,16 @@
 import "./Profile.css";
 import SideBar from "../SideBar/SideBar";
 import ClothesSection from "../ClothesSection/ClothesSection";
-import ItemModal from "../ItemModal/ItemModal";
 import { useContext, useState } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 
 function Profile({
   clothingItems,
   handleCardClick,
   handleAddBtnClick,
   onCardLike,
+  onEditProfile,
 }) {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
 
@@ -44,7 +45,7 @@ function Profile({
         <EditProfileModal
           isOpen={isProfileModalOpen}
           onClose={() => setProfileModalOpen(false)}
-          onEditProfile={(data) => setCurrentUser(data)}
+          onEditProfile={onEditProfile}
         />
       )}
     </div>

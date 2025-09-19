@@ -174,6 +174,7 @@ function App() {
       const updatedUser = await updateUserProfile(name, avatar, token);
       setCurrentUser(updatedUser);
       setIsEditProfileOpen(false);
+      closeActiveModal();
     });
   };
 

@@ -42,12 +42,12 @@ function ItemModal({
             <p className="modal__weather">Weather: {card?.weather || "N/A"}</p>
           </div>
 
-          <img
+          <button
             className={itemDeleteButtonClassName}
-            src={deleteItem}
-            alt="Delete item"
             onClick={() => handleCardDelete(card._id)}
-          />
+          >
+            Delete Item
+          </button>
         </div>
       </div>
     </div>
