@@ -1,4 +1,8 @@
-const baseUrl = "http://localhost:3001";
+const baseUrl =
+  import.meta.env.VITE_API_URL ||
+  (process.env.NODE_ENV === "production"
+    ? "https://api.wtwrTLV.twilightparadox.com"
+    : "http://localhost:3001");
 
 const checkResponse = (res) => {
   if (res.ok) {
